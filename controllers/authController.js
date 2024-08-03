@@ -1,4 +1,4 @@
-const User = require('../models/UserModel'); // placeholder label and file location
+const User = require('../models/UserModel'); 
 const Session = require('../models/Session');
 
 const authController = {};
@@ -6,10 +6,13 @@ const authController = {};
 authController.signup = (req, res, next) => {
   const { name, username, password } = req.body;
 
+  console.log('Received signup request:', req.body);
+
   // Check if the user already exists
   User.findOne({ username })
   .then(user => {
     if (user) {
+      console.log('User already exists:', username); // Log if user already exists
       return res.status(400).json({ message: 'User already exists' });
     } else {
       const newUser = new User({ name, username, password });
@@ -17,6 +20,7 @@ authController.signup = (req, res, next) => {
     }
   })
   .then(() => {
+    console.log('User signup successful:', username); // Log successful signup
     res.status(200).json({ message: 'User signup successful' });
   })
   .catch(() => next({
