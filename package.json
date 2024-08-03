@@ -1,8 +1,19 @@
 {
+  "scripts": {
+    "start": "node server/server.js",
+    "build": "export NODE_ENV=production; webpack",
+    "dev": "export NODE_ENV=development; webpack serve --open",
+    "gulp-prod": "node_modules/.bin/gulp prod",
+    "gulp-dev": "node_modules/.bin/gulp dev"
+  },
   "devDependencies": {
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "mongoose": "^8.5.2"
+    "-": "^0.0.1",
+    "mongoose": "^8.5.2",
+    "save-dev": "^0.0.1-security",
+    "webpack": "^5.93.0",
+    "webpack-dev-server": "^5.0.4"
   }
 }
