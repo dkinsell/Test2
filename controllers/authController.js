@@ -1,4 +1,4 @@
-const User = require('../models/User'); // placeholder label and file location
+const User = require('../models/UserModel'); // placeholder label and file location
 const Session = require('../models/Session');
 
 const authController = {};
@@ -20,14 +20,14 @@ authController.signup = (req, res, next) => {
     res.status(200).json({ message: 'User signup successful' });
   })
   .catch(() => next({
-    log: 'authController.register: Error creating new user',
+    log: 'authController.signup: Error creating new user',
     status: 500,
     message: { err: 'Error occurred during user registration' }
   }));
 }
 
 authController.login = (req, res, next) => {
-  const { name, username, password } = req.body;
+  const { username, password } = req.body;
   
   User.findOne({ username, password })
     .then(user => {
@@ -38,7 +38,10 @@ authController.login = (req, res, next) => {
       // Create a new session for the user
       const newSession = new Session({ userId: user._id });
       return newSession.save()
-        .then(session => res.status(200).json({ message: 'Login successful', sessionId: session._id }));
+      .then(session => {
+        res.cookie('sessionId', session._id, { httpOnly: true }); // Set a cookie with the session ID
+        res.status(200).json({ message: 'Login successful' });
+      });
     })
     .catch(() => next({
       log: 'authController.login: Error finding user',
