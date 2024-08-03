@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Kindred = require('./KindredModel');
+const Kindred = require('../models/KindredModel');
 
 //mongoose array methods: .push to add documents for nested schemas, .isMongooseArray to check if pushable
 //https://masteringjs.io/tutorials/mongoose/array#document-arrays

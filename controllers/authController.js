@@ -1,17 +1,18 @@
 const User = require('../models/User'); // placeholder label and file location
+const Session = require('../models/Session');
 
 const authController = {};
 
 authController.signup = (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, username, password } = req.body;
 
   // Check if the user already exists
-  User.findOne({ email })
+  User.findOne({ username })
   .then(user => {
     if (user) {
       return res.status(400).json({ message: 'User already exists' });
     } else {
-      const newUser = new User({ name, email, password });
+      const newUser = new User({ name, username, password });
       return newUser.save();
     }
   })
@@ -26,7 +27,24 @@ authController.signup = (req, res, next) => {
 }
 
 authController.login = (req, res, next) => {
+  const { name, username, password } = req.body;
   
+  User.findOne({ username, password })
+    .then(user => {
+      if (!user) {
+        return res.status(400).json({ message: 'Invalid username or password' });
+      }
+
+      // Create a new session for the user
+      const newSession = new Session({ userId: user._id });
+      return newSession.save()
+        .then(session => res.status(200).json({ message: 'Login successful', sessionId: session._id }));
+    })
+    .catch(() => next({
+      log: 'authController.login: Error finding user',
+      status: 500,
+      message: { err: 'Error occurred during user login' }
+    }));
 }
 
 module.exports = authController;
