@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "mongoose": "^8.5.2"
+  }
+}
