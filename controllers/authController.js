@@ -32,10 +32,13 @@ authController.signup = (req, res, next) => {
 
 authController.login = (req, res, next) => {
   const { username, password } = req.body;
+
+  console.log('Received login request:', req.body);
   
   User.findOne({ username, password })
     .then(user => {
       if (!user) {
+        console.log('Invalid username or password:', username);
         return res.status(400).json({ message: 'Invalid username or password' });
       }
 

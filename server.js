@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+// require('dotenv').config({ path: './mongodb.env' });
 const authRoutes = require('./routes/authRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
 
@@ -17,10 +18,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded data
 app.use(cookieParser());
 
 //MongoDB connection
-// const mongoURI = process.env.MONGO_URI;
-// mongoose.connect(mongoURI)
-// .then(() => console.log('MongoDB connected'))
-// .catch(err => console.log(err));
+const mongoURI = process.env.MONGO_URI;
+mongoose.connect(mongoURI)
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.log(err));
 
 // Routes
 app.use('/auth', authRoutes); // Auth routes
